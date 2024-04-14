@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, useMemo } from "react";
+import { useEffect, useState, memo, useMemo, useCallback } from "react";
 import { faker } from "@faker-js/faker";
 
 function createRandomPost() {
@@ -25,9 +25,11 @@ function App() {
         )
       : posts;
 
-  function handleAddPost(post) {
+  // useCallback only the function itself memoize while useMemo calling the callback and memoize the results/ memoize a value
+  // state setter functions have stable identity and they will not change in rerenders so we dont need to add them in dependency array
+  const handleAddPost = useCallback(function handleAddPost(post) {
     setPosts((posts) => [post, ...posts]);
-  }
+  }, []);
 
   function handleClearPosts() {
     setPosts([]);
